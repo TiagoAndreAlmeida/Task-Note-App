@@ -20,13 +20,14 @@ class LoginPage extends StatelessWidget {
               Text(
                 "Task Note",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 40,
+                style: TextStyle
+                (
+                  fontSize: 60,
                   fontStyle: FontStyle.italic
                 ),
               ),
               SizedBox(
-                height: 80
+                height: 50
               ),
               TextFormField(
                 keyboardType: TextInputType.emailAddress,
@@ -61,6 +62,11 @@ class LoginPage extends StatelessWidget {
                   child: Text(
                     "Esqueceu sua senha ?",
                     textAlign: TextAlign.right,
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.grey,
+                      fontStyle: FontStyle.italic
+                    ),
                   ),
                   onPressed: () => {},
                 ),
@@ -71,14 +77,17 @@ class LoginPage extends StatelessWidget {
               Container(
                 height: 50,
                 decoration: BoxDecoration(
-                  color: Colors.blueAccent
+                  color: Colors.blueAccent,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(7)
+                  )
                 ),
                 child: SizedBox.expand(
                   child: FlatButton(
                     child: Text(
                       "Entrar",
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 25,
                         color: Colors.white
                       ),
                     ),
@@ -87,7 +96,7 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 30,
+                height: 40,
               ),
               Container(
                 alignment: Alignment.center,
@@ -95,6 +104,9 @@ class LoginPage extends StatelessWidget {
                   // splashColor: Colors.transparent, comment this until find way to highlight color text instead flatbutton.
                   child: Text(
                     "Criar Conta",
+                    style: TextStyle(
+                      fontSize: 25,
+                    ),
                   ),
                   onPressed: () => {},
                 ),

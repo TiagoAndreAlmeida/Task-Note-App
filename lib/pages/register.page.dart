@@ -1,6 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:task_app/models/user.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
+  @override
+  _RegisterPageState createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  
+  String email = '';
+  String name = '';
+  String password = '';
+
+  User user;
+
+  submit() {
+    user = User(email: this.email, name: this.name, password: this.password);
+    print(user.toJson());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,6 +85,7 @@ class RegisterPage extends StatelessWidget {
               height: 15,
             ),
             TextFormField(
+              
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 labelText: 'Nome',
@@ -75,6 +94,11 @@ class RegisterPage extends StatelessWidget {
                   fontSize: 20
                 ),
               ),
+              onChanged: (value) => {
+                setState(() => {
+                  this.name = value
+                })
+              },
             ),
             SizedBox(
               height: 15,
@@ -88,6 +112,11 @@ class RegisterPage extends StatelessWidget {
                   fontSize: 20
                 ),
               ),
+              onChanged: (value) => {
+                setState(() => {
+                  this.email = value
+                })
+              },
             ),
             SizedBox(
               height: 15,
@@ -101,6 +130,11 @@ class RegisterPage extends StatelessWidget {
                   fontSize: 20
                 ),
               ),
+              onChanged: (value) => {
+                setState(() => {
+                  this.password = value
+                })
+              },
             ),
             SizedBox(
               height: 30,
@@ -115,7 +149,9 @@ class RegisterPage extends StatelessWidget {
                 ),
               ),
               color: Colors.blue,
-              onPressed: () => {},
+              onPressed: () => {
+                this.submit()
+              },
             )
           ],
         ),

@@ -68,3 +68,4 @@ flutter:
   #use this for reference assets files.
   assets:
     - assets/background.jpg
+    - assets/person.png

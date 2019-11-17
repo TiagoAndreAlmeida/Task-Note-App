@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'register.page.dart';
+
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -108,7 +110,12 @@ class LoginPage extends StatelessWidget {
                       fontSize: 25,
                     ),
                   ),
-                  onPressed: () => {},
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RegisterPage()),
+                    )
+                  },
                 ),
               ),
             ],

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:task_app/models/user.dart';
 
@@ -150,7 +151,12 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               color: Colors.blue,
               onPressed: () => {
-                this.submit()
+                Navigator.pop(context)
+                // this.submit();
+                // Navigator.push(
+                //       context,
+                //       CupertinoPageRoute(builder: (context) => RegisterPage()),
+                //     )
               },
             )
           ],

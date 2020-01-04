@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:task_app/pages/recover.page.dart';
 
 import 'register.page.dart';
 
@@ -70,7 +72,14 @@ class LoginPage extends StatelessWidget {
                       fontStyle: FontStyle.italic
                     ),
                   ),
-                  onPressed: () => {},
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => RecorverPage()
+                      )
+                    )
+                  },
                 ),
               ),
               SizedBox(
@@ -113,7 +122,9 @@ class LoginPage extends StatelessWidget {
                   onPressed: () => {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => RegisterPage()),
+                      CupertinoPageRoute(
+                        builder: (context) => RegisterPage()
+                      ),
                     )
                   },
                 ),

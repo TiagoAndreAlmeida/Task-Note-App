@@ -7,6 +7,9 @@ class RecorverPage extends StatefulWidget {
 }
 
 class _RecorverPageState extends State<RecorverPage> {
+
+  String email;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +44,7 @@ class _RecorverPageState extends State<RecorverPage> {
                     style: TextStyle(
                       fontSize: 20,
                     ),
+                    onChanged: (value) => setState(() => this.email = value),
                   ),
                   SizedBox(height: 20,),
                   ButtonTheme(

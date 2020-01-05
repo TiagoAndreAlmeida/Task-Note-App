@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:task_app/components/bottom_bar.dart';
 import 'package:task_app/pages/recover.page.dart';
 
 import 'register.page.dart';
@@ -102,7 +103,11 @@ class LoginPage extends StatelessWidget {
                         color: Colors.white
                       ),
                     ),
-                    onPressed: () => {},
+                    onPressed: () => Navigator.pushReplacement(
+                      context, 
+                      CupertinoPageRoute(
+                        builder: (context) => BottomBar()
+                      )),
                   )
                 ),
               ),

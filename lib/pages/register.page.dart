@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
       print(response.body);
       Navigator.pop(context);
     } else {
+      Map<String, dynamic> error = jsonDecode(response.body);
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -38,7 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 fontSize: 25
               )),
             content: Text(
-              "Parece que esse email já esta em uso!",
+              error["message"],
               style: TextStyle(
                 fontSize: 20
               )),

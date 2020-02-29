@@ -14,9 +14,9 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   
-  String email = 'testador01@email.com';
-  String name = 'Testador';
-  String password = '12345678';
+  String email = '';
+  String name = '';
+  String password = '';
   String photo = '';
 
   User user;

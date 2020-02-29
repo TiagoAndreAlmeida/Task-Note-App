@@ -2,11 +2,13 @@ class User {
   String name;
   String email;
   String password;
+  String photo;
 
   User({
     this.name,
     this.email,
-    this.password
+    this.password,
+    this.photo
   });
 
   //serializers
@@ -14,6 +16,7 @@ class User {
     this.name = json['name'];
     this.email = json['email'];
     this.password = json['password'];
+    this.photo = json['photo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -21,6 +24,7 @@ class User {
     data['name'] = this.name;
     data['email'] = this.email;
     data['password'] = this.password;
+    data['photo'] = this.photo;
     return data;
   }
 }

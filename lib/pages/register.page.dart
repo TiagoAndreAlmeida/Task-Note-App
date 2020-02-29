@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:task_app/utils/utils.dart';
 import 'package:task_app/models/user.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -9,15 +12,50 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   
-  String email = '';
-  String name = '';
-  String password = '';
+  String email = 'testador01@email.com';
+  String name = 'Testador';
+  String password = '12345678';
+  String photo = '';
 
   User user;
 
-  submit() {
-    user = User(email: this.email, name: this.name, password: this.password);
-    print(user.toJson());
+  Future submit(context) async {
+    user = User(email: this.email, name: this.name, password: this.password, photo: this.photo);
+    final response = await http.post('$URL/user_profile/',
+      body: user.toJson()
+    );
+    if(response.statusCode == 200) {
+      print(response.body);
+      Navigator.pop(context);
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Ops!!",
+              style: TextStyle(
+                fontSize: 25
+              )),
+            content: Text(
+              "Parece que esse email já esta em uso!",
+              style: TextStyle(
+                fontSize: 20
+              )),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  "Entendi",
+                  style: TextStyle(
+                    fontSize: 20
+                  )),
+                onPressed: () => Navigator.of(context).pop()
+              )
+            ],
+          );
+        }
+      );
+    }
   }
 
   @override
@@ -87,7 +125,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             TextFormField(
               
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 labelText: 'Nome',
                 labelStyle: TextStyle(
@@ -151,8 +189,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               color: Colors.blue,
               onPressed: () => {
-                Navigator.pop(context)
-                // this.submit();
+                this.submit(context)
                 // Navigator.push(
                 //       context,
                 //       CupertinoPageRoute(builder: (context) => RegisterPage()),

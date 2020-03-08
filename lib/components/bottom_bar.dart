@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:task_app/models/user.dart';
 
 import 'package:task_app/pages/create.page.dart';
 import 'package:task_app/pages/home.page.dart';
 import 'package:task_app/pages/profile.page.dart';
 
 class BottomBar extends StatefulWidget {
+  final User user;
+  
+  BottomBar({Key key, @required this.user}) : super(key: key);
+
   @override
   _BottomBarState createState() => _BottomBarState();
 }
@@ -16,6 +21,7 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.user.toString());
     return Scaffold(
       body: _childrens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(

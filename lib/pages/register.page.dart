@@ -1,9 +1,11 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:task_app/components/bottom_bar.dart';
+
 import 'package:task_app/utils/utils.dart';
 import 'package:task_app/models/user.dart';
 
@@ -18,7 +20,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String name = '';
   String password = '';
   String photo = '';
-
+  File currentImage;
   User user;
 
   Future submit(context) async {
@@ -28,7 +30,11 @@ class _RegisterPageState extends State<RegisterPage> {
     );
     if(response.statusCode == 200) {
       print(response.body);
-      Navigator.pop(context);
+      Navigator.pushReplacement(
+      context, 
+      CupertinoPageRoute(
+        builder: (context) => BottomBar(user: this.user)
+      ));
     } else {
       Map<String, dynamic> error = jsonDecode(response.body);
       showDialog(
@@ -61,6 +67,60 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
+  Future getImage(source) async {
+    File image = await ImagePicker.pickImage(source: source);
+    String base64 = base64Encode(image.readAsBytesSync());
+    
+    setState(() {
+      photo = base64;
+      currentImage = image;
+    });
+  }
+
+  void choiceImageSource(context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Escolher uma foto",
+              style: TextStyle(
+                fontSize: 25
+              )),
+            content: Text(
+              "escolha como você deseja adicionar uma foto",
+              style: TextStyle(
+                fontSize: 20
+              )),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  "Camera",
+                  style: TextStyle(
+                    fontSize: 20
+                  )),
+                onPressed: () => {
+                  Navigator.of(context).pop(),
+                  this.getImage(ImageSource.camera)
+                }
+              ),
+              FlatButton(
+                child: Text(
+                  "Galeria",
+                  style: TextStyle(
+                    fontSize: 20
+                  )),
+                onPressed: () => {
+                  Navigator.of(context).pop(),
+                  this.getImage(ImageSource.gallery)
+                }
+              )
+            ],
+          );
+        }
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +133,6 @@ class _RegisterPageState extends State<RegisterPage> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/background.jpg'),
-            // colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
             colorFilter: ColorFilter.mode(
               Colors.black.withOpacity(0.4), 
               BlendMode.dstATop
@@ -85,49 +144,41 @@ class _RegisterPageState extends State<RegisterPage> {
           children: <Widget>[
             Container(
               // width: 20,
-              height: 120,
+              height: 140,
               alignment: Alignment(0.0, 1.5),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: AssetImage('assets/person.png'),
-                  fit: BoxFit.contain,
-                ),
-                border: Border.all(
-                  width: 5,
-                ),
+                border: this.currentImage != null ? null : Border.all(
+                  color: Colors.black,
+                  width: 5
+                )
               ),
-              child: Container(
-                height: 35,
-                width: 35,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    width: 2
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(50)
-                  )
-                ),
-                child: SizedBox.expand(
-                  child: FlatButton(
-                      padding: EdgeInsets.all(0),
-                      child: Icon(
-                        Icons.add,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)
-                      ),
-                      onPressed: () => {},
+              child: Stack(
+                overflow: Overflow.visible,
+                alignment: Alignment.center,
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(65),
+                    child: Image(
+                      image: this.currentImage != null ? FileImage(File(this.currentImage.path)) : AssetImage('assets/person.png'),
+                  )),
+                  Positioned(
+                    bottom: -25,
+                    child: FloatingActionButton(
+                      child: Icon(Icons.add_a_photo),
+                      backgroundColor: Colors.blue,
+                      onPressed: () => {
+                        this.choiceImageSource(context)
+                      },
                     )
-                  ),
-                ),
+                  )
+                ],
+              ),
             ),
             SizedBox(
               height: 15,
             ),
             TextFormField(
-              
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 labelText: 'Nome',
@@ -191,13 +242,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
               color: Colors.blue,
-              onPressed: () => {
-                this.submit(context)
-                // Navigator.push(
-                //       context,
-                //       CupertinoPageRoute(builder: (context) => RegisterPage()),
-                //     )
-              },
+              onPressed: () => this.submit(context),
             )
           ],
         ),

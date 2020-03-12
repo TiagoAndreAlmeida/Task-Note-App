@@ -157,11 +157,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 overflow: Overflow.visible,
                 alignment: Alignment.center,
                 children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(65),
-                    child: Image(
-                      image: this.currentImage != null ? FileImage(File(this.currentImage.path)) : AssetImage('assets/person.png'),
-                  )),
+                  CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    backgroundImage: this.currentImage != null ? FileImage(File(this.currentImage.path)) : AssetImage('assets/person.png'),
+                    radius: 65,
+                  ),
                   Positioned(
                     bottom: -25,
                     child: FloatingActionButton(

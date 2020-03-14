@@ -1,11 +1,76 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:task_app/models/user.dart';
+
+import 'package:task_app/utils/utils.dart';
 import 'package:task_app/components/bottom_bar.dart';
 import 'package:task_app/pages/recover.page.dart';
 
 import 'register.page.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+
+  String _email;
+  String _password;
+  User _user;
+
+  Future login () async {
+    final response = await http.post('$URL/auth_login/',
+    body: {
+      "username": this._email,
+      "password": this._password
+    });
+
+    if(response.statusCode == 200) {
+      Map<String, dynamic> json = jsonDecode(response.body);
+      this._user = User.fromJson(json);
+
+      Navigator.pushReplacement(
+      context, 
+      CupertinoPageRoute(
+        builder: (context) => BottomBar(user: this._user,)
+      ));
+    } else {
+      print(response.body);
+      Map<String, dynamic> error = jsonDecode(response.body);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Ops!!",
+              style: TextStyle(
+                fontSize: 25
+              )),
+            content: Text(
+              error["message"],
+              style: TextStyle(
+                fontSize: 20
+              )),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  "Entendi",
+                  style: TextStyle(
+                    fontSize: 20
+                  )),
+                onPressed: () => Navigator.of(context).pop()
+              )
+            ],
+          );
+        }
+      );
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,6 +108,11 @@ class LoginPage extends StatelessWidget {
                     fontSize: 20
                   ),
                 ),
+                onChanged: (value) => {
+                  setState(() => {
+                    this._email = value
+                  })
+                },
               ),
               SizedBox(
                 height: 15,
@@ -57,6 +127,11 @@ class LoginPage extends StatelessWidget {
                     fontSize: 20
                   ),
                 ),
+                onChanged: (value) => {
+                  setState(() => {
+                    this._password = value
+                  })
+                },
               ),
               SizedBox(
                 height: 5,
@@ -103,11 +178,7 @@ class LoginPage extends StatelessWidget {
                         color: Colors.white
                       ),
                     ),
-                    onPressed: () => Navigator.pushReplacement(
-                      context, 
-                      CupertinoPageRoute(
-                        builder: (context) => BottomBar()
-                      )),
+                    onPressed: () => this.login()
                   )
                 ),
               ),

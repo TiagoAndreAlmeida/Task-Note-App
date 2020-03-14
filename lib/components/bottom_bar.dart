@@ -21,7 +21,6 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.user.toString());
     return Scaffold(
       body: _childrens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(

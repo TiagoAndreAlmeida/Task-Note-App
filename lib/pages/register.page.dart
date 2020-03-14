@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:task_app/components/bottom_bar.dart';
+import 'package:task_app/components/message.dart';
 
 import 'package:task_app/utils/utils.dart';
 import 'package:task_app/models/user.dart';
@@ -37,33 +38,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ));
     } else {
       Map<String, dynamic> error = jsonDecode(response.body);
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              "Ops!!",
-              style: TextStyle(
-                fontSize: 25
-              )),
-            content: Text(
-              error["message"],
-              style: TextStyle(
-                fontSize: 20
-              )),
-            actions: <Widget>[
-              FlatButton(
-                child: Text(
-                  "Entendi",
-                  style: TextStyle(
-                    fontSize: 20
-                  )),
-                onPressed: () => Navigator.of(context).pop()
-              )
-            ],
-          );
-        }
-      );
+      Message.show(context, 'Ops', error["message"]);
     }
   }
 

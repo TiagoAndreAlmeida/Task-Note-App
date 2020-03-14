@@ -8,7 +8,7 @@ import 'package:task_app/models/user.dart';
 import 'package:task_app/utils/utils.dart';
 import 'package:task_app/components/bottom_bar.dart';
 import 'package:task_app/pages/recover.page.dart';
-
+import 'package:task_app/components/message.dart';
 import 'register.page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -39,35 +39,8 @@ class _LoginPageState extends State<LoginPage> {
         builder: (context) => BottomBar(user: this._user,)
       ));
     } else {
-      print(response.body);
       Map<String, dynamic> error = jsonDecode(response.body);
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              "Ops!!",
-              style: TextStyle(
-                fontSize: 25
-              )),
-            content: Text(
-              error["message"],
-              style: TextStyle(
-                fontSize: 20
-              )),
-            actions: <Widget>[
-              FlatButton(
-                child: Text(
-                  "Entendi",
-                  style: TextStyle(
-                    fontSize: 20
-                  )),
-                onPressed: () => Navigator.of(context).pop()
-              )
-            ],
-          );
-        }
-      );
+      Message.show(context, 'Ops', error["message"]);
     }
   }
   

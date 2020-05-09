@@ -32,7 +32,9 @@ class _LoginPageState extends State<LoginPage> {
     if(response.statusCode == 200) {
       Map<String, dynamic> json = jsonDecode(response.body);
       this._user = User.fromJson(json);
-
+      print(response.body);
+      print(json);
+      print(this._user.email);
       Navigator.pushReplacement(
       context, 
       CupertinoPageRoute(

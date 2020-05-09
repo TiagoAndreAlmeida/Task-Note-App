@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
+import 'package:task_app/models/user.dart';
+
 class ProfilePage extends StatefulWidget {
+  final User user;
+
+  ProfilePage({Key key, @required this.user}) : super(key: key);
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -8,6 +14,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
+    print(widget.user.name);
+    print(widget.user.email);
     return Container(
       padding: EdgeInsets.only(left: 20, right: 20),
       child: Column(
@@ -58,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
         SizedBox(
           width: double.infinity,
           child: Text(
-            "User name will",
+            widget.user.name,
             textAlign: TextAlign.start,
             style: TextStyle(
               fontSize: 25,
@@ -69,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
         SizedBox(
           width: double.infinity,
           child: Text(
-            "User email@email.com",
+            widget.user.email,
             textAlign: TextAlign.start,
             style: TextStyle(
               fontSize: 25,

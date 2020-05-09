@@ -16,7 +16,7 @@ class User {
   //serializers
   User.fromJson(Map<String, dynamic> json) {
     this.name = json['name'];
-    this.email = json['email'];
+    this.email = json['user']['email'];
     this.password = json['password'];
     this.photo = json['photo'];
     this.id = json['id'];

@@ -26,10 +26,16 @@ dependencies:
   http: ^0.12.0+4
   flutter_calendar_carousel: ^1.4.11
   image_picker: ^0.6.3+4
+  provider:
+  mobx: 
+  flutter_mobx:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  
+  build_runner:
+  mobx_codegen:
 
 
 # For information on the generic Dart part of this file, see the

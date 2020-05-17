@@ -6,12 +6,15 @@ class Services {
 
   Future userResgister(User user) async {
     print("Chamou API");
+    Map<String, dynamic> data = user.toJson();
+    Object _user = {
+      "email": user.email,
+      "password": user.password
+    };
+    data['user'] = _user;
     final response = await http.post('$URL/user_profile/',
-      body: user.toJson()
+      body: data
     );
-    if(response.statusCode == 200) {
-      print(response.body);
-    } else {
-    }
+    return response;
   }
 }

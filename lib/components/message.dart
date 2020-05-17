@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Message {
-  static void show(context, title, message) {
-    showDialog(
+  static Future show(BuildContext context, String title, String message) {
+    return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(

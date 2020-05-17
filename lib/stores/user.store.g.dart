@@ -24,6 +24,13 @@ mixin _$UserStore on _UserStore, Store {
     });
   }
 
+  final _$submitAsyncAction = AsyncAction('_UserStore.submit');
+
+  @override
+  Future<dynamic> submit(BuildContext context) {
+    return _$submitAsyncAction.run(() => super.submit(context));
+  }
+
   final _$_UserStoreActionController = ActionController(name: '_UserStore');
 
   @override
@@ -54,17 +61,6 @@ mixin _$UserStore on _UserStore, Store {
         name: '_UserStore.setUserPassword');
     try {
       return super.setUserPassword(value);
-    } finally {
-      _$_UserStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void submit() {
-    final _$actionInfo =
-        _$_UserStoreActionController.startAction(name: '_UserStore.submit');
-    try {
-      return super.submit();
     } finally {
       _$_UserStoreActionController.endAction(_$actionInfo);
     }

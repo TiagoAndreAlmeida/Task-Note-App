@@ -195,7 +195,7 @@ class RegisterPage extends StatelessWidget {
                 ),
               ),
               color: Colors.blue,
-              onPressed: () => userStore.submit(),
+              onPressed: () => userStore.submit(context),
             )
           ],
         ),

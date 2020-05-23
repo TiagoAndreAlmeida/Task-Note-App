@@ -24,6 +24,7 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.user.id);
     final List<Widget> children = _childrens();
     return Scaffold(
       body: children[_currentIndex],

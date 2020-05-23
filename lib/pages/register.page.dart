@@ -2,45 +2,22 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:task_app/components/bottom_bar.dart';
 import 'package:task_app/components/message.dart';
 import 'package:task_app/stores/user.store.dart';
 
-import 'package:task_app/utils/utils.dart';
-
 class RegisterPage extends StatelessWidget {
 
-  // Future submit(context) async {
-  //   user = User(email: this.email, name: this.name, password: this.password, photo: this.photo);
-  //   final response = await http.post('$URL/user_profile/',
-  //     body: user.toJson()
-  //   );
-  //   if(response.statusCode == 200) {
-  //     print(response.body);
-  //     Navigator.pushReplacement(
-  //     context, 
-  //     CupertinoPageRoute(
-  //       builder: (context) => BottomBar(user: this.user)
-  //     ));
-  //   } else {
-  //     Map<String, dynamic> error = jsonDecode(response.body);
-  //     Message.show(context, 'Ops', error["message"]);
-  //   }
-  // }
+  Future getImage(source, userStore) async {
 
-  Future getImage(source) async {
     File image = await ImagePicker.pickImage(source: source);
     String base64 = base64Encode(image.readAsBytesSync());
-    
-    // setState(() {
-    //   photo = base64;
-    //   currentImage = image;
-    // });
+    userStore.setUserImage(base64, image);
   }
 
-  void choiceImageSource(context) {
+  void choiceImageSource(context, userStore) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -64,7 +41,7 @@ class RegisterPage extends StatelessWidget {
                   )),
                 onPressed: () => {
                   Navigator.of(context).pop(),
-                  this.getImage(ImageSource.camera)
+                  this.getImage(ImageSource.camera, userStore)
                 }
               ),
               FlatButton(
@@ -75,7 +52,7 @@ class RegisterPage extends StatelessWidget {
                   )),
                 onPressed: () => {
                   Navigator.of(context).pop(),
-                  this.getImage(ImageSource.gallery)
+                  this.getImage(ImageSource.gallery, userStore)
                 }
               )
             ],
@@ -87,7 +64,9 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userStore = Provider.of<UserStore>(context);
-
+    print("#####");
+    print(userStore.currentImage);
+    print("#####");
     return Scaffold(
       resizeToAvoidBottomInset: true, //using this to not resize screen when keyboard appears
       appBar: AppBar(
@@ -113,27 +92,28 @@ class RegisterPage extends StatelessWidget {
               alignment: Alignment(0.0, 1.5),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                // border: this.currentImage != null ? null : Border.all(
-                //   color: Colors.black,
-                //   width: 5
-                // )
+                border: userStore.currentImage != null ? null : Border.all(
+                  color: Colors.black,
+                  width: 5
+                )
               ),
               child: Stack(
                 overflow: Overflow.visible,
                 alignment: Alignment.center,
                 children: <Widget>[
-                  CircleAvatar(
+                  Observer(
+                    builder: (context) => CircleAvatar(
                     backgroundColor: Colors.transparent,
-                    // backgroundImage: this.currentImage != null ? FileImage(File(this.currentImage.path)) : AssetImage('assets/person.png'),
+                    backgroundImage: userStore.currentImage != null ? FileImage(File(userStore.currentImage.path)) : AssetImage('assets/person.png'),
                     radius: 65,
-                  ),
+                  )),
                   Positioned(
                     bottom: -25,
                     child: FloatingActionButton(
                       child: Icon(Icons.add_a_photo),
                       backgroundColor: Colors.blue,
                       onPressed: () => {
-                        this.choiceImageSource(context)
+                        this.choiceImageSource(context, userStore)
                       },
                     )
                   )

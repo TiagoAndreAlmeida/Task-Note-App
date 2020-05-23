@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:task_app/components/bottom_bar.dart';
 import 'package:task_app/models/user.dart';
 import 'package:task_app/services/services.dart';
 import 'package:task_app/components/message.dart';
@@ -12,6 +16,8 @@ abstract class _UserStore with Store {
 
   @observable
   User user = new User(name: '', email: '', password: '', photo: '');
+  @observable
+  File currentImage = null;
 
   @action
   void setUserName(String value) => user.name = value;
@@ -23,15 +29,24 @@ abstract class _UserStore with Store {
   void setUserPassword(String value) => user.password = value;
 
   @action
+  void setUserImage(String base64, File image) {
+    user.photo = base64;
+    currentImage = image;
+  }
+  @action
   Future submit(BuildContext context) async {
     final response = await services.userResgister(user);
     
     if(response.statusCode != 201) {
-      print("deu ruim");
       Message.show(context, "Error", response.body);
     } else {
-      print("deu certo");
-      print(response.body);
+      Map<String, dynamic> json = jsonDecode(response.body);
+      user = User.fromJson(json);
+      Navigator.pushReplacement(
+      context, 
+      CupertinoPageRoute(
+        builder: (context) => BottomBar(user: user)
+      ));
     }
   }
 }

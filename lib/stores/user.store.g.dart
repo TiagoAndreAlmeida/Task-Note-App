@@ -24,6 +24,21 @@ mixin _$UserStore on _UserStore, Store {
     });
   }
 
+  final _$currentImageAtom = Atom(name: '_UserStore.currentImage');
+
+  @override
+  File get currentImage {
+    _$currentImageAtom.reportRead();
+    return super.currentImage;
+  }
+
+  @override
+  set currentImage(File value) {
+    _$currentImageAtom.reportWrite(value, super.currentImage, () {
+      super.currentImage = value;
+    });
+  }
+
   final _$submitAsyncAction = AsyncAction('_UserStore.submit');
 
   @override
@@ -67,9 +82,21 @@ mixin _$UserStore on _UserStore, Store {
   }
 
   @override
+  void setUserImage(String base64, File image) {
+    final _$actionInfo = _$_UserStoreActionController.startAction(
+        name: '_UserStore.setUserImage');
+    try {
+      return super.setUserImage(base64, image);
+    } finally {
+      _$_UserStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-user: ${user}
+user: ${user},
+currentImage: ${currentImage}
     ''';
   }
 }

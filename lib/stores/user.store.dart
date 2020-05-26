@@ -33,11 +33,29 @@ abstract class _UserStore with Store {
     user.photo = base64;
     currentImage = image;
   }
+  
   @action
   Future submit(BuildContext context) async {
     final response = await services.userResgister(user);
     
     if(response.statusCode != 201) {
+      Message.show(context, "Error", response.body);
+    } else {
+      Map<String, dynamic> json = jsonDecode(response.body);
+      user = User.fromJson(json);
+      Navigator.pushReplacement(
+      context, 
+      CupertinoPageRoute(
+        builder: (context) => BottomBar(user: user)
+      ));
+    }
+  }
+
+  @action
+  Future login(BuildContext context) async {
+    final response = await services.userLogin(user.email, user.password);
+
+    if(response.statusCode != 200) {
       Message.show(context, "Error", response.body);
     } else {
       Map<String, dynamic> json = jsonDecode(response.body);

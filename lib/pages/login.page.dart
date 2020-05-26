@@ -1,53 +1,45 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:task_app/models/user.dart';
+import 'package:provider/provider.dart';
 
-import 'package:task_app/utils/utils.dart';
-import 'package:task_app/components/bottom_bar.dart';
 import 'package:task_app/pages/recover.page.dart';
-import 'package:task_app/components/message.dart';
+import 'package:task_app/stores/user.store.dart';
 import 'register.page.dart';
 
-class LoginPage extends StatefulWidget {
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
+class LoginPage extends StatelessWidget {
 
-class _LoginPageState extends State<LoginPage> {
+  // String _email;
+  // String _password;
+  // User _user;
 
-  String _email;
-  String _password;
-  User _user;
+  // Future login () async {
+  //   final response = await http.post('$URL/auth_login/',
+  //   body: {
+  //     "username": this._email,
+  //     "password": this._password
+  //   });
 
-  Future login () async {
-    final response = await http.post('$URL/auth_login/',
-    body: {
-      "username": this._email,
-      "password": this._password
-    });
-
-    if(response.statusCode == 200) {
-      Map<String, dynamic> json = jsonDecode(response.body);
-      this._user = User.fromJson(json);
-      print(response.body);
-      print(json);
-      print(this._user.email);
-      Navigator.pushReplacement(
-      context, 
-      CupertinoPageRoute(
-        builder: (context) => BottomBar(user: this._user,)
-      ));
-    } else {
-      Map<String, dynamic> error = jsonDecode(response.body);
-      Message.show(context, 'Ops', error["message"]);
-    }
-  }
+  //   if(response.statusCode == 200) {
+  //     Map<String, dynamic> json = jsonDecode(response.body);
+  //     this._user = User.fromJson(json);
+  //     print(response.body);
+  //     print(json);
+  //     print(this._user.email);
+  //     Navigator.pushReplacement(
+  //     context, 
+  //     CupertinoPageRoute(
+  //       builder: (context) => BottomBar(user: this._user,)
+  //     ));
+  //   } else {
+  //     Map<String, dynamic> error = jsonDecode(response.body);
+  //     Message.show(context, 'Ops', error["message"]);
+  //   }
+  // }
   
   @override
   Widget build(BuildContext context) {
+    final userStore = Provider.of<UserStore>(context);
+    
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -83,11 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                     fontSize: 20
                   ),
                 ),
-                onChanged: (value) => {
-                  setState(() => {
-                    this._email = value
-                  })
-                },
+                onChanged: userStore.setUserEmail
               ),
               SizedBox(
                 height: 15,
@@ -102,11 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                     fontSize: 20
                   ),
                 ),
-                onChanged: (value) => {
-                  setState(() => {
-                    this._password = value
-                  })
-                },
+                onChanged: userStore.setUserPassword
               ),
               SizedBox(
                 height: 5,
@@ -153,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                         color: Colors.white
                       ),
                     ),
-                    onPressed: () => this.login()
+                    onPressed: () => userStore.login(context)
                   )
                 ),
               ),

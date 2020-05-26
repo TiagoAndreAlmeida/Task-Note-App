@@ -10,4 +10,15 @@ class Services {
     );
     return response;
   }
+
+  Future userLogin(String email, String password) async {
+    Map<String, String> data = {
+      "username": email,
+      "password": password
+    };
+    final response = await http.post('$URL/auth_login/', 
+      body: data
+    );
+    return response;
+  }
 }

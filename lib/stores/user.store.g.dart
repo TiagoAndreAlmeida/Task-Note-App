@@ -46,6 +46,13 @@ mixin _$UserStore on _UserStore, Store {
     return _$submitAsyncAction.run(() => super.submit(context));
   }
 
+  final _$loginAsyncAction = AsyncAction('_UserStore.login');
+
+  @override
+  Future<dynamic> login(BuildContext context) {
+    return _$loginAsyncAction.run(() => super.login(context));
+  }
+
   final _$_UserStoreActionController = ActionController(name: '_UserStore');
 
   @override

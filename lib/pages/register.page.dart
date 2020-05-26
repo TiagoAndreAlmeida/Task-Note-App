@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:task_app/components/message.dart';
 import 'package:task_app/stores/user.store.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -64,9 +63,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userStore = Provider.of<UserStore>(context);
-    print("#####");
-    print(userStore.currentImage);
-    print("#####");
+
     return Scaffold(
       resizeToAvoidBottomInset: true, //using this to not resize screen when keyboard appears
       appBar: AppBar(

@@ -21,4 +21,10 @@ class Services {
     );
     return response;
   }
+
+  Future getTasks (int id) async {
+    final response = await http.get('$URL/tasks?owner=$id');
+
+    return response;
+  }
 }

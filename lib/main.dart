@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:task_app/pages/login.page.dart';
+import 'package:task_app/stores/task.store.dart';
 import 'package:task_app/stores/user.store.dart';
 
 void main() => runApp(MyApp());
@@ -12,7 +13,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<UserStore>(create: (_) => UserStore(),)
+        Provider<UserStore>(create: (_) => UserStore(),),
+        Provider<TaskStore>(create: (_) => TaskStore(),)
       ],
       child: MaterialApp(
         title: 'Task Note',

@@ -18,18 +18,22 @@ abstract class _TaskStore with Store {
 
   @action
   Future getTasks (BuildContext context, int id) async {
+    print("INICIO");
     final response = await services.getTasks(id);
 
     if(response.statusCode != 200) {
       Message.show(context, "Error", response.body);
     } else {
-      Map<String, dynamic> json = jsonDecode(response.body);
-      ObservableList<Task> new_list;
-      
-      json.forEach((key, value) { 
-        new_list.add(Task.fromJson(value));
+      print("DEU CERTO");
+      var json = jsonDecode(response.body);
+      print("1");
+      ObservableList<Task> new_list = new ObservableList<Task>();
+      print("2");
+      json.forEach((value) => {
+        print(value),
+        new_list.add(Task.fromJson(value))
       });
-
+      print("3");
       list_task = new_list;
     }
   }

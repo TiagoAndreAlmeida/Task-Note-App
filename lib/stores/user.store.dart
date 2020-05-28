@@ -15,7 +15,7 @@ abstract class _UserStore with Store {
   Services services = new Services();  
 
   @observable
-  User user = new User(name: '', email: '', password: '', photo: '');
+  User user = new User(name: '', email: 'mario@email.com', password: '123456', photo: '');
   @observable
   File currentImage = null;
 

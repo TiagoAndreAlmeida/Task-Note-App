@@ -14,27 +14,22 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Task> tasks = new List<Task>();
   
+
   @override
-  void initState () {
-    super.initState();
+  void didChangeDependencies () {
+    super.didChangeDependencies();
     final userStore = Provider.of<UserStore>(context);
     final taskStore = Provider.of<TaskStore>(context);
     taskStore.getTasks(context, userStore.user.id);
   }
 
-
-  // _HomePageState(){
-  //   tasks.add(Task(title: 'title 1', description: 'descrip', done: true, dateTime: DateTime.now()));
-  //   tasks.add(Task(title: 'title 2', description: 'descripdescripdescripdescripdescripdescripdescripdescripdescripdescripdescripdescripdescripdescripdescripdescripdescripdescrip', done: false, dateTime: DateTime.now()));
-  //   tasks.add(Task(title: 'title 3', description: 'descrip', done: true, dateTime: DateTime.now()));
-  //   tasks.add(Task(title: 'title 4', description: 'descrip', done: false, dateTime: DateTime.now()));
-  // }
-
   @override
   Widget build(BuildContext context) {
+    final taskStore = Provider.of<TaskStore>(context);
     return ListView.builder(
-      itemCount: this.tasks.length,
-      itemBuilder: (BuildContext context, int index) =>  TaskItem(task: this.tasks[index])
+      itemCount: taskStore.list_task.length,
+      itemBuilder: (BuildContext context, int index) => 
+        TaskItem(task: taskStore.list_task[index])
       );
   }
 }

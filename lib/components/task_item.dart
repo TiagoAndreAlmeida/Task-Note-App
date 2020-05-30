@@ -29,7 +29,7 @@ class TaskItem extends StatelessWidget {
                   fontSize: 15
                 ),
               ),
-              Text(this.task.dateTime.toString())
+              Text("${this.task.dateTime.day.toString()}-${this.task.dateTime.month.toString().padLeft(2,'0')}-${this.task.dateTime.year.toString()}")
             ],
           )),
           IconButton(

@@ -15,7 +15,7 @@ class Task {
     this.title = json['title'];
     this.description = json['description'];
     this.done = json['done'];
-    this.dateTime = json['dateTime'];
+    this.dateTime = DateTime.parse(json['dead_line']);
   }
 
   Map<String, dynamic> toJson() {

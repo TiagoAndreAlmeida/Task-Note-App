@@ -39,6 +39,14 @@ mixin _$UserStore on _UserStore, Store {
     });
   }
 
+  final _$updatePhotoAsyncAction = AsyncAction('_UserStore.updatePhoto');
+
+  @override
+  Future<dynamic> updatePhoto(BuildContext context, String base64) {
+    return _$updatePhotoAsyncAction
+        .run(() => super.updatePhoto(context, base64));
+  }
+
   final _$submitAsyncAction = AsyncAction('_UserStore.submit');
 
   @override

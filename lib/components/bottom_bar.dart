@@ -20,7 +20,7 @@ class BottomBar extends StatefulWidget {
 class _BottomBarState extends State<BottomBar> {
   int _currentIndex = 0;
   
-  List<Widget> _childrens() => [HomePage(), ProfilePage(user: widget.user)];
+  List<Widget> _childrens() => [HomePage(), ProfilePage()];
 
   @override
   Widget build(BuildContext context) {

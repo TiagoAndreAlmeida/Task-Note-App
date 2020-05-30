@@ -1,72 +1,103 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:task_app/stores/user.store.dart';
+import 'package:task_app/utils/utils.dart';
 
-import 'package:task_app/models/user.dart';
+class ProfilePage extends StatelessWidget {
 
-class ProfilePage extends StatefulWidget {
-  final User user;
+  Future getImage(source, userStore, context) async {
 
-  ProfilePage({Key key, @required this.user}) : super(key: key);
+    File image = await ImagePicker.pickImage(source: source);
+    String base64 = base64Encode(image.readAsBytesSync());
+    userStore.updatePhoto(context, base64);
+  }
 
-  @override
-  _ProfilePageState createState() => _ProfilePageState();
-}
+  void choiceImageSource(context, userStore) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            "Escolher uma foto",
+            style: TextStyle(
+              fontSize: 25
+            )),
+          content: Text(
+            "escolha como você deseja adicionar uma foto",
+            style: TextStyle(
+              fontSize: 20
+            )),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                "Camera",
+                style: TextStyle(
+                  fontSize: 20
+                )),
+              onPressed: () => {
+                Navigator.of(context).pop(),
+                this.getImage(ImageSource.camera, userStore, context)
+              }
+            ),
+            FlatButton(
+              child: Text(
+                "Galeria",
+                style: TextStyle(
+                  fontSize: 20
+                )),
+              onPressed: () => {
+                Navigator.of(context).pop(),
+                this.getImage(ImageSource.gallery, userStore, context)
+              }
+            )
+          ],
+        );
+      }
+    );
+  }
 
-class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    print(widget.user.name);
-    print(widget.user.email);
+    final userStore = Provider.of<UserStore>(context);
+
     return Container(
       padding: EdgeInsets.only(left: 20, right: 20),
       child: Column(
       // mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         SizedBox(height: 80,),
-        Container(
-          // width: 20,
-          height: 120,
-          alignment: Alignment(0.0, 1.5),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-              image: AssetImage('assets/person.png'),
-              fit: BoxFit.contain,
-            ),
-            border: Border.all(
-              width: 5,
-            ),
-          ),
-          child: Container(
-            height: 35,
-            width: 35,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(
-                width: 2
-              ),
-              borderRadius: BorderRadius.all(
-                Radius.circular(50)
+        Stack(
+          overflow: Overflow.visible,
+          alignment: Alignment.center,
+          children: <Widget>[
+            Observer(
+              builder: (context) => CircleAvatar(
+              backgroundColor: Colors.transparent,
+              backgroundImage: NetworkImage("$HOST${userStore.user.photo}"),
+              radius: 65,
+            )),
+            Positioned(
+              bottom: -25,
+              child: FloatingActionButton(
+                child: Icon(Icons.add_a_photo),
+                backgroundColor: Colors.blue,
+                onPressed: () => {
+                  this.choiceImageSource(context, userStore)
+                },
               )
-            ),
-            child: SizedBox.expand(
-              child: FlatButton(
-                  padding: EdgeInsets.all(0),
-                  child: Icon(
-                    Icons.add,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                  onPressed: () => {},
-                )
-              ),
-            ),
+            )
+          ],
         ),
         SizedBox(height: 20,),
         SizedBox(
           width: double.infinity,
           child: Text(
-            widget.user.name,
+            userStore.user.name,
             textAlign: TextAlign.start,
             style: TextStyle(
               fontSize: 25,
@@ -77,7 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
         SizedBox(
           width: double.infinity,
           child: Text(
-            widget.user.email,
+            userStore.user.email,
             textAlign: TextAlign.start,
             style: TextStyle(
               fontSize: 25,

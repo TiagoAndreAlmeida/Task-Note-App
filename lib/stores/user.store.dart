@@ -33,6 +33,18 @@ abstract class _UserStore with Store {
     user.photo = base64;
     currentImage = image;
   }
+
+  @action
+  Future updatePhoto(BuildContext context, String base64) async {
+    final response = await services.userUpdatePhoto(base64, user.id);
+
+    if(response.statusCode != 200) {
+      Message.show(context, "Error", response.body);
+    } else {
+      Map<String, dynamic> json = jsonDecode(response.body);
+      user = User.fromJson(json);
+    }
+  }
   
   @action
   Future submit(BuildContext context) async {

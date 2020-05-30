@@ -27,4 +27,10 @@ class Services {
 
     return response;
   }
+
+  Future userUpdatePhoto(String base64, int id) async {
+    final response = await http.patch('$URL/user_profile/$id/');
+
+    return response;
+  }
 }
